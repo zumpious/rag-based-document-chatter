@@ -1,4 +1,3 @@
-# test_setup.py
 from src.rag.setup import setup_rag
 from src.utils.config import get_env_vars
 from typing import Dict, Optional
