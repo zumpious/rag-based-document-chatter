@@ -7,3 +7,4 @@ python-dotenv
 PyPDF2
 tiktoken
 transformers
+streamlit
