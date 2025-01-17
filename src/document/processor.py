@@ -13,8 +13,10 @@ def process_document(pdf_path: str, vector_db_path: str) -> FAISS:
     
     # Split text into chunks
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200
+        chunk_size=2500,
+        chunk_overlap=600,
+        length_function=len,
+        is_separator_regex=False
     )
     splits = text_splitter.split_documents(documents)
     
