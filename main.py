@@ -12,13 +12,13 @@ def init_session_state() -> None:
         env_vars = get_env_vars()
         st.session_state.qa_chain = setup_rag(env_vars['vector_db_path'])
 
-def process_query(query: str, chat_history: List[Dict[str, str]]) -> Dict[str, Any]:
+def process_query(query: str, chat_history: List[Dict[str, str]], k_value: int, fetch_k: int) -> Dict[str, Any]:
     """Process user query using RAG system with debug info"""
     try:
         # Get retriever with parameters
         retriever = st.session_state.qa_chain.retriever
-        retriever.search_kwargs['k'] = 4  # Get more context chunks
-        retriever.search_kwargs['fetch_k'] = 8  # Fetch more candidates
+        retriever.search_kwargs['k'] = k_value  # Get more context chunks
+        retriever.search_kwargs['fetch_k'] = fetch_k  # Fetch more candidates
         
         # Get raw documents for debugging
         raw_docs = retriever.get_relevant_documents(query)
@@ -69,8 +69,10 @@ def main() -> None:
         # RAG Settings
         st.subheader("RAG Parameters")
         k_value = st.slider("Number of chunks to retrieve", 1, 10, 4)
-        fetch_k = st.slider("Number of candidates to consider", 4, 20, 8)
-        
+        fetch_k = st.slider("Number of candidates to consider (fetch_k)", 
+                       min_value=k_value,  # Must be >= k_value
+                       max_value=20, 
+                       value=max(k_value * 2, 8))         
         st.divider()
         if st.button("Clear Chat History"):
             st.session_state.messages = []
@@ -95,7 +97,7 @@ def main() -> None:
         # Generate response
         with st.chat_message("assistant"):
             with st.spinner("Researching..."):
-                response = process_query(prompt, st.session_state.messages[:-1])
+                response = process_query(prompt, st.session_state.messages[:-1], k_value, fetch_k)
                 
                 # Display main response
                 st.markdown(response['answer'])
