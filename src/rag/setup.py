@@ -4,6 +4,21 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 
 def setup_rag(vector_store_path: str):
+    """Set up Retrieval-Augmented Generation (RAG) system.
+    
+    Loads a FAISS vector store from disk, initializes OpenAI embeddings,
+    and creates a conversational retrieval chain for question answering
+    with document context.
+
+    Args:
+        vector_store_path: Directory path containing FAISS index
+
+    Returns:
+        ConversationalRetrievalChain configured with GPT-4 and document retriever
+
+    Raises:
+        FileNotFoundError: If vector store is not found at specified path
+    """
     embedding = OpenAIEmbeddings()
     
     if not os.path.exists(vector_store_path):
@@ -18,6 +33,6 @@ def setup_rag(vector_store_path: str):
     llm = ChatOpenAI(model_name="gpt-4", temperature=0)
     return ConversationalRetrievalChain.from_llm(
         llm=llm,
-        retriever=vectorstore.as_retriever(search_kwargs={'k': 3}),
+        retriever=vectorstore.as_retriever(),
         return_source_documents=True
     )
