@@ -20,21 +20,22 @@ A simple RAG system that enables you to have interactive conversations with your
    cd rag-based-document-chatter
    ```
 
-2. Create and activate virtual environment:
+2. Create .env and set up your environment variables:
+   ```bash
+   cp .env.template .env   
+   ```
+
+3. Create and activate virtual environment (Optional):
    ```bash
    python -m venv venv
    source venv/bin/activate 
    ```
 
-3. Install dependencies:
+4. Install dependencies (Optional):
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Create .env and set up environment variables:
-   ```bash
-   cp .env.template .env   
-   ```
 
 ## 📖 Usage
 
@@ -52,3 +53,28 @@ A simple RAG system that enables you to have interactive conversations with your
    ```bash
    streamlit run main.py   
    ```
+
+## 🐳 Docker Setup
+
+1. Build the Docker image:
+   ```bash
+   docker build -t rag_app .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -d -p 8501:8501 --name rag_app rag_app
+   ```
+   
+3. Acess the application:
+   - Open http://localhost:8501 in your browser
+
+## 🐋 Docker Compose Setup
+
+1. Build and start the container:
+   ```bash
+   docker compose up -d
+   ````
+
+2. Access the application:
+   - Open http://localhost:8501 in your browser
