@@ -17,7 +17,7 @@ def init_session_state() -> None:
         st.session_state.messages = []
     if "qa_chain" not in st.session_state:
         env_vars = get_env_vars()
-        st.session_state.qa_chain = setup_rag(env_vars['vector_db_path'])
+        st.session_state.qa_chain = setup_rag(env_vars['vector_db_path'], env_vars['gpt_model'])
 
 def process_query(query: str, chat_history: List[Dict[str, str]], k_value: int, fetch_k: int) -> Dict[str, Any]:
     """Process user query using RAG system with debug information.
