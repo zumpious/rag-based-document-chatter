@@ -1,4 +1,3 @@
-# main.py
 import streamlit as st
 from src.rag.setup import setup_rag
 from src.utils.config import get_env_vars
